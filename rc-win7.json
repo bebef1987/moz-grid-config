@@ -2,7 +2,7 @@
     "capabilities":
         [
             {
-                "browserName": "Firefox 6 on Linux",
+                "browserName": "Firefox 6 on Windows 7",
                 "maxInstances": 5
             }
         ],
