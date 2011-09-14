@@ -3,4 +3,4 @@ hub:
        - name: "Firefox 6 on Windows 7"
          browser: "*firefox C:/Program Files/Mozilla Firefox/firefox.exe"
        - name: "Firefox 6 on Linux"
-         browser: "*firefox /home/vladmaniac/Desktop/Grid/Firefox/firefox"
+         browser: "*firefox /home/vladmaniac/Desktop/Grid/Firefox/firefox/firefox"
