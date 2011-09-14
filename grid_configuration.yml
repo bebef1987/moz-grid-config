@@ -4,3 +4,5 @@ hub:
          browser: "*firefox C:/Program Files/Mozilla Firefox/firefox.exe"
        - name: "Firefox 6 on Linux"
          browser: "*firefox /home/vladmaniac/Desktop/Grid/Firefox/firefox/firefox"
+       - name: "Firefox 6 on Ubuntu"
+         browser: "*firefox /usr/lib/firefox-6.0.2/firefox.sh"
