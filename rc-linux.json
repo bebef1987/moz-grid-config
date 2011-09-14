@@ -3,7 +3,7 @@
         [
             {
                 "browserName": "Firefox 6 on Linux",
-                "maxInstances": 5
+                "maxInstances": 7
             }
         ],
     "configuration": {
