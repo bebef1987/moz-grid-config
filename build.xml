@@ -8,6 +8,15 @@
   <property file="${basedir}/default.properties"/>
 
   <target name = "get-selenium">
+    <mkdir dir="lib"/>
+    <get src="http://selenium-release.storage.googleapis.com/${selenium.version.major}/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar"
+           dest="lib"
+           usetimestamp="true"
+           ignoreerrors="yes"/>
+
+    <available file="lib/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar" property="selenium.present"/>
+
+    <fail unless="selenium.present" message="Unable to locate lib/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar"/>
 
   </target>
 
@@ -30,16 +39,6 @@
 
   <target name="fetch-dependencies"
       depends="get-os-var, doMac, doWindows, doUnix">
-
-    <mkdir dir="lib"/>
-    <get src="http://selenium-release.storage.googleapis.com/${selenium.version.major}/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar"
-         dest="lib"
-         usetimestamp="true"
-         ignoreerrors="yes"/>
-
-    <available file="lib/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar" property="selenium.present"/>
-
-    <fail unless="selenium.present" message="Unable to locate lib/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar"/>
 
     <echo> Geting chrome version</echo>
     <get src="http://chromedriver.storage.googleapis.com/${chromedriver.version}/${chrome.driver.download}"
