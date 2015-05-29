@@ -1,4 +1,4 @@
-<project name="selenium-grid" default="launch-node" basedir=".">
+<project name="selenium-grid" default="launch-node" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
 
   <property environment="env"/>
   <exec executable="hostname" osfamily="unix" failifexecutionfails="false" outputproperty="env.COMPUTERNAME"/>
@@ -7,7 +7,30 @@
   <property file="${basedir}/${env.HOSTNAME}.properties" />
   <property file="${basedir}/default.properties"/>
 
-  <target name="fetch-dependencies">
+  <target name = "get-selenium">
+
+  </target>
+
+  <target name="get-os-var">
+    <echo> os family</echo>
+    <!-- first create our properties -->
+    <condition property="isMac" value="true">
+      <os family="mac" />
+    </condition>
+
+    <condition property="isWindows" value="true">
+      <os family="windows" />
+    </condition>
+
+    <condition property="isUnix" value="true">
+      <os family="unix" />
+    </condition>
+    <echo> ${isWindows}</echo>
+  </target>
+
+  <target name="fetch-dependencies"
+      depends="get-os-var, doMac, doWindows, doUnix">
+
     <mkdir dir="lib"/>
     <get src="http://selenium-release.storage.googleapis.com/${selenium.version.major}/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar"
          dest="lib"
@@ -17,7 +40,44 @@
     <available file="lib/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar" property="selenium.present"/>
 
     <fail unless="selenium.present" message="Unable to locate lib/selenium-server-standalone-${selenium.version.major}.${selenium.version.minor}.jar"/>
+
+    <echo> Geting chrome version</echo>
+    <get src="http://chromedriver.storage.googleapis.com/${chromedriver.version}/${chrome.driver.download}"
+      dest="lib"
+      usetimestamp="true"
+      ignoreerrors="yes"/>
+    <unzip src="lib/${chrome.driver.download}" dest="lib/"/>
+    <available file="lib/${chrome.driver.location}" property="chromedriver.present"/>
+    <fail unless="chromedriver.present" message="Unable to locate lib/${chrome.driver.location}"/>
   </target>
+
+  <!-- now create our operating system specific targets -->
+  <target name="doMac" if="isMac">
+    <set name="chrome.driver.location" value="chromedriver"/>
+    <property name="chrome.driver.download" value="chromedriver_mac32.zip"/>
+  </target>
+
+  <target name="doWindows" if="isWindows">
+    <echo> is windows</echo>
+    <property name="chrome.driver.location" value="chromedriver.exe"/>
+    <property name="chrome.driver.download" value="chromedriver_win32.zip"/>
+    <echo> chrome prop: ${chrome.driver.download} ${chrome.driver.location}</echo>
+
+    <get src="http://selenium-release.storage.googleapis.com/${selenium.version.major}/IEDriverServer_x64_${selenium.version.major}.${selenium.version.minor}.zip"
+      dest="lib"
+      usetimestamp="true"
+      ignoreerrors="yes"/>
+
+    <unzip src="lib/IEDriverServer_x64_${selenium.version.major}.${selenium.version.minor}.zip" dest="lib/"/>
+    <available file="lib/IEDriverServer.exe" property="IEDriver.present"/>
+    <fail unless="IEDriver.present" message="Unable to locate selenium driver"/>
+  </target>
+
+  <target name="doUnix" if="isUnix">
+    <property name="chrome.driver.location" value="chromedriver"/>
+    <property name="chrome.driver.download" value="chromedriver_linux32.zip"/>
+  </target>
+
 
   <target name="set-config">
     <echo>os.name: ${os.name}</echo>
@@ -136,6 +196,8 @@
       <arg value="http://${hub.host}:${hub.port}/grid/register"/>
       <arg value="-host"/>
       <arg value="${node.host}"/>
+      <arg value="-Dwebdriver.chrome.driver=lib\${chrome.driver.location}"/>
+      <arg unless:blank="${isWindows}" value="-Dwebdriver.ie.driver=lib\IEDriverServer.exe"/>
       <arg value="-nodeConfig"/>
       <arg value="${node.configuration.file}"/>
     </java>
@@ -156,6 +218,8 @@
       <arg value="http://${hub.host}:${hub.port}/grid/register"/>
       <arg value="-host"/>
       <arg value="${node.host}"/>
+      <arg value="-Dwebdriver.chrome.driver=lib\${chrome.driver.location}"/>
+      <arg if:true="${isWindows}" value="-Dwebdriver.ie.driver=lib\IEDriverServer.exe"/>
       <arg value="-nodeConfig"/>
       <arg value="${node.configuration.file}"/>
       <arg value="-debug"/>
