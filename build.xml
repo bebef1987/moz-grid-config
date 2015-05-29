@@ -38,7 +38,7 @@
   </target>
 
   <target name="fetch-dependencies"
-      depends="get-os-var, doMac, doWindows, doUnix">
+      depends="get-selenium, get-os-var, doMac, doWindows, doUnix">
 
     <echo> Geting chrome version</echo>
     <get src="http://chromedriver.storage.googleapis.com/${chromedriver.version}/${chrome.driver.download}"
