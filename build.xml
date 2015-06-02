@@ -195,8 +195,8 @@
       <arg value="http://${hub.host}:${hub.port}/grid/register"/>
       <arg value="-host"/>
       <arg value="${node.host}"/>
-      <arg value="-Dwebdriver.chrome.driver=lib\${chrome.driver.location}"/>
-      <arg unless:blank="${isWindows}" value="-Dwebdriver.ie.driver=lib\IEDriverServer.exe"/>
+      <arg value="-Dwebdriver.chrome.driver=lib/${chrome.driver.location}"/>
+      <arg unless:blank="${isWindows}" value="-Dwebdriver.ie.driver=lib/IEDriverServer.exe"/>
       <arg value="-nodeConfig"/>
       <arg value="${node.configuration.file}"/>
     </java>
@@ -217,8 +217,8 @@
       <arg value="http://${hub.host}:${hub.port}/grid/register"/>
       <arg value="-host"/>
       <arg value="${node.host}"/>
-      <arg value="-Dwebdriver.chrome.driver=lib\${chrome.driver.location}"/>
-      <arg if:true="${isWindows}" value="-Dwebdriver.ie.driver=lib\IEDriverServer.exe"/>
+      <arg value="-Dwebdriver.chrome.driver=lib/${chrome.driver.location}"/>
+      <arg if:true="${isWindows}" value="-Dwebdriver.ie.driver=lib/IEDriverServer.exe"/>
       <arg value="-nodeConfig"/>
       <arg value="${node.configuration.file}"/>
       <arg value="-debug"/>
