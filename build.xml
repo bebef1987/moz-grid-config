@@ -52,7 +52,7 @@
 
   <!-- now create our operating system specific targets -->
   <target name="doMac" if="isMac">
-    <set name="chrome.driver.location" value="chromedriver"/>
+    <property name="chrome.driver.location" value="chromedriver"/>
     <property name="chrome.driver.download" value="chromedriver_mac32.zip"/>
   </target>
 
