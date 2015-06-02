@@ -46,6 +46,7 @@
       usetimestamp="true"
       ignoreerrors="yes"/>
     <unzip src="lib/${chrome.driver.download}" dest="lib/"/>
+    <chmod file="lib/${chrome.driver.location}" perm="755"/>
     <available file="lib/${chrome.driver.location}" property="chromedriver.present"/>
     <fail unless="chromedriver.present" message="Unable to locate lib/${chrome.driver.location}"/>
   </target>
